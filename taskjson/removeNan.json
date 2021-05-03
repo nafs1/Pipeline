@@ -1,0 +1,22 @@
+{
+    "taskName": "removeNan",
+    "inputName": "iris",
+    "input": [
+        {
+            "sr_no": "1",
+            "name": "j",
+            "Data_type": "j",
+            "default_val": "j"
+        }
+    ],
+    "executor": "executor1.py",
+    "outputName": "j",
+    "output": [
+        {
+            "sr_no": "1",
+            "name": "j",
+            "Data_type": "j",
+            "default_val": "j"
+        }
+    ]
+}

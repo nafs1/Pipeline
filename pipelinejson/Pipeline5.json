@@ -1,0 +1,26 @@
+{
+    "pipelineName": "Pipeline5",
+    "taskList": [
+        {
+            "TaskId": "1",
+            "Name": "removeNan"
+        },
+        {
+            "TaskId": "2",
+            "Name": "Preprocess"
+        },
+        {
+            "TaskId": "3",
+            "Name": "Normalize"
+        },
+        {
+            "TaskId": "4",
+            "Name": "calc_weight"
+        },
+        {
+            "TaskId": "5",
+            "Name": "Evaluate"
+        }
+    ],
+    "totalTask": "5"
+}

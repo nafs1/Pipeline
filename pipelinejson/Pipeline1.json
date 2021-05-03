@@ -1,0 +1,12 @@
+{
+    "pipelineName": "Pipeline1",
+	"totalTask": 4,
+	"input_csv_name": "iris.csv",
+    "taskList": [
+        {
+            "TaskId": "1",
+            "Name": "normalize"
+        }
+       
+    ]
+}

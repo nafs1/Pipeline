@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="style1.css">
+
+</head>
+<body onload="construct()">
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">Logo</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Projects</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<div class="container-fluid text-center">    
+  <div class="row content">
+    <div class="col-sm-1 sidenav">
+    </div>
+    <div class="col-sm-10 text-left"> 
+      <h2 style="text-align:center">Task Generator</h2>
+	  <p style="text-align:center">A general view of Task-Container</p> 
+	  <hr>
+	  
+	  
+	  
+	  <div class="form-group">
+       <h3>Task Name</h3>
+       <input size=25 type="text" class="form-control" id = "task_name">
+	  </div>
+	  
+	  <div class="form-group">
+       <h3>Input Name</h3>
+       <input size=25 type="text" class="form-control" id = "input_name">
+	  </div>
+	  
+	  <div id="tablediv">
+    
+		<table id="inputTable" class="table table-bordered">
+		  <thead>
+			<tr>
+			  <th>Sr.No</th>
+			  <th>Feature_Name</th>
+			  <th>Data-type</th>
+			  <th>Default_value</th>
+			  <th>Delete</th>
+			  <th>Add Rows</th>
+			</tr>
+		  </thead>
+		  <tbody>
+			<tr>
+			<td>1</td>
+			<td><input size=25 type="text" id="latbox" /></td>
+			<td><input size=25 type="text" id="lngbox" /></td>
+			<td><input size=25 type="text" id="z" /></td>
+			<td><input type="button" class="btn btn-danger" id="delInputButton" value="Delete" onclick="deleteRow(this)" /></td>
+			<td><input type="button" class="btn btn-primary" id="addInputButton" value="Add More Features" onclick="insRow()" /></td>
+			</tr>      
+		  </tbody>
+		</table>
+		
+      </div>
+	  
+	  <div id="exec">
+		<form action ="/upload_exec" enctype="multipart/form-data" method="POST" target="hidden_iframe">
+		  
+			<h4><span>Upload Executor File:</span></h4>
+			<br>
+			<input type="file" name="myfile" required id ="file_upload" accept=".py"> <br>
+			<input type="submit" class="btn btn-info" value="Upload" id = "exec_py" onclick="upload_fun()">
+		</form>
+      </div>
+	  <iframe name="hidden_iframe" style="display: none;"></iframe>
+	  
+	  <div class="form-group" id="Execution">
+       <h3>Python Executable File Path </h3>
+       <input type="text" class="form-control" name='File path' id ="executor" readonly>
+	  </div>
+	  
+	  <div class="form-group">
+       <h3> Output Name</h3>
+       <input size =25 type="text" class="form-control" id = "output_name">
+	  </div>
+	  
+	
+	  
+	  <div id="outtablediv">
+    
+		<table id="outputTable" class="table table-bordered" >
+		  <thead>
+			<tr>
+			  <th>Sr.No</th>
+			  <th>Feature_Name</th>
+			  <th>Data-type</th>
+			  <th>Default_value</th>
+			  <th>Delete</th>
+			  <th>Add Rows</th>
+			</tr>
+		  </thead>
+		  <tbody>
+			<tr>
+			<td>1</td>
+			<td><input size=25 type="text" id="outlatbox" /></td>
+			<td><input size=25 type="text" id="outlngbox" /></td>
+			<td><input size=25 type="text" id="outz" /></td>
+			<td><input type="button" class="btn btn-danger" id="outdelInputButton" value="Delete" onclick="outdeleteRow(this)" /></td>
+			<td><input type="button" class="btn btn-primary" id="outaddInputButton" value="Add More Features" onclick="outinsRow()" /></td>
+			</tr>      
+		  </tbody>
+		</table>
+		
+			<input type="button" class="btn btn-success btn-block" id="generateTask" value="Generate Task" onclick="fun()" /><br><br>
+    
+			<p id="outdemo"></p>
+    
+	  </div>
+	  
+	  
+	  
+	   <button onclick="document.location='pipeline.html'">Go to Pipeline</button>
+	  
+	  
+    </div>
+    <div class="col-sm-1 sidenav">
+    </div>
+  </div>
+</div>
+
+<footer class="container-fluid text-center">
+  <p>Footer Text</p>
+</footer>
+
+<script src="myindex.js">
+
+</script>
+
+</body>
+</html>

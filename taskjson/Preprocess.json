@@ -1,0 +1,22 @@
+{
+    "taskName": "Preprocess",
+    "inputName": "vufq",
+    "input": [
+        {
+            "sr_no": "1",
+            "name": "h",
+            "Data_type": "h",
+            "default_val": "h"
+        }
+    ],
+    "executor": "executor3.py",
+    "outputName": "h",
+    "output": [
+        {
+            "sr_no": "1",
+            "name": "h",
+            "Data_type": "h",
+            "default_val": "h"
+        }
+    ]
+}

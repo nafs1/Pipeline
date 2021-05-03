@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="style1.css">
+
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">Logo</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Projects</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<div class="container-fluid text-center">    
+  <div class="row content">
+    <div class="col-sm-1 sidenav">
+    </div>
+	
+	
+    <div class="col-sm-10"> 
+      <h2>Pipeline Dashboard</h2>
+	  <p>A general view of Pipeline-Dashboard</p> 
+	  <hr>
+	  
+	  <div class="col-sm-2 text-left"></div>
+	   
+		<div class="col-sm-8 text-left">
+	  
+			<div>
+			<input type="button" class="btn btn-info" id="get_task" value="Fetch Tasks" onclick="fetch_pipeline()" />
+			</div>
+			<br><br>
+			<div id="select_pipe">
+			</div>
+			<br><br>
+			<div id="csv">
+			  <form action ="/upload_csv" enctype="multipart/form-data" method="POST" target="hidden_iframe">
+				<h4><span>Upload CSV File:</span></h4>
+				<br> 
+                <input type="file" name="mycsvfile" required id ="input_csv" accept=".csv"> <br>
+                <input type="submit" class="btn btn-warning" value="Upload" id = "csv-upload" onclick="upload_csv()">
+			  </form>
+            </div>
+			<iframe name="hidden_iframe" style="display: none;"></iframe>
+			
+			<div class="form-group">
+			   <h3>CSV File Path</h3>
+			   <input size=25 type="text" class="form-control" id = "csv_path" readonly>
+			</div>
+			
+			<br><br>
+			<div>			
+			<input type="button" class="btn btn-success btn-block" value="Run Pipeline" id = "run_pipe" onclick="run_python()">			
+			<input type="button" class="btn btn-primary btn-block" id="check_status" value="Check Status" onclick="check_status()" />
+			</div>
+			
+		</div>
+		<div class="col-sm-2 text-left"></div>
+		
+		<!-- Modal -->
+		<div class="modal fade" id="myModal" role="dialog">
+			<div class="modal-dialog modal-lg">
+			
+			  <!-- Modal content-->
+			  <div class="modal-content">
+				<div class="modal-header">
+				  <h4 class="modal-title">Pipeline Log</h4>
+				  <button type="button" class="close" data-dismiss="modal">&times;</button>
+				  
+				</div>
+				<div class="modal-body" id="mydiv">
+				  <p id = "mypara">============================ Log =============================</p>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			  </div>
+			  
+			</div>
+		</div>
+	
+    </div>
+    <div class="col-sm-1 sidenav">
+    </div>
+  </div>
+</div>
+
+<footer class="container-fluid text-center">
+  <p>Footer Text</p>
+</footer>
+
+<script src="mypipeline_dashboard.js">
+</script>
+
+</body>
+</html>

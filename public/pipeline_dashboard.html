@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Pipeline Generator</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- <script src="https://requirejs.org/docs/release/2.3.5/minified/require.jscripts/require.js"></script> -->
+  <!-- <script src ="getInputs.js"></script> -->
+</head>
+<body onload="fetch_pipeline()">
+
+
+<div class="container">
+  <h3>Pipeline Dashboard</h3>
+  <p>A general view of Pipeline-Dashboard</p> 
+  <hr />
+  
+	<div id="pipeholder" >
+    <div id="select_pipe" style="border-style: dotted; width: fit-content; padding: 10px;">
+    
+    </div>
+    <br>
+    <div id="csvfile" style="border-style: dotted; width: fit-content; padding: 10px;">
+      
+      
+      <div id="csv">
+        <form action ="/upload_csv" enctype="multipart/form-data" method="POST" target="hidden_iframe">
+            
+          <label for="input_csv">Choose Input CSV file to upload</label><br> 
+          <br/>
+              <input type="file" name="mycsvfile" required id ="input_csv" accept=".csv"> <br><br>
+              <input type="submit" value="Upload" id = "csv-upload" onclick="upload_csv()">
+          </form>
+        </div>
+        <iframe name="hidden_iframe" style="display: none;"></iframe>
+        
+    </div>
+    
+    <br>
+    <input type="submit" value="Run Pipeline" id = "run_pipe" onclick="" style="background-color: blue; border-radius: 10%;color: white;">
+  </div>
+	<br><br><br><br>
+  
+	
+	<div>
+		<input type="button" id="run_python" value="Run Python" onclick="run_python()" />
+    </div>
+	
+	<div>
+		<input type="button" id="check_python" value="Run Pipe" onclick="check_python()" />
+    </div>
+	
+	<div>
+		<input type="button" id="check_status" value="Check Status" onclick="check_status()" />
+    </div>
+	
+	
+	
+  <button type="button" class="btn btn-info btn-md" id="myBtn" onclick="check_status()">Open Modal</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+		  <h4 class="modal-title">Pipeline Log</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          
+        </div>
+        <div class="modal-body" id="mydiv">
+          <p id = "mypara">============================ Log =============================</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  
+  
+</div>
+
+<script type="text/javascript" >
+
+  
+  
+      
+function run_python() {
+    console.log("inside run_python frontend");
+	
+	$.get('/run_python', function(data, status){
+	   console.log("Data fetched "+ data); 
+	   
+  });
+
+
+}
+
+
+
+function check_python() {
+    console.log("inside check_python frontend");
+	
+	$.get('/check_python', function(data, status){
+	   console.log("Data fetched "+ data); 
+	   
+  });
+}
+
+
+function check_status() {
+    console.log("inside check_status frontend");
+	
+	$.get('/check_status', function(data, status){
+	   console.log("Data fetched "+ data);
+
+
+		for( let i = 0;i<data.length;i++){
+
+		var para = document.createElement("P");
+		var t = document.createTextNode("Task :" + data[i].TaskName+"=======>Log :"+ data[i].Log);
+		para.appendChild(t);
+		document.getElementById("mydiv").appendChild(para);
+		}
+		
+	   
+	   
+  });
+  
+  $("#myModal").modal();
+}
+
+function fetch_pipeline(){
+  $.get('/fetch_pipes', function(pipes, status){
+	   console.log("Data fetched"+ pipes[0].Name); 
+		var select = document.createElement("select");
+			select.name = "pipe";
+			select.id = "pipe";      
+		//Add the Options to the DropDownList.
+			for (var i = 0; i < pipes.length; i++) {
+			  var option = document.createElement("OPTION");
+		 
+			  //Set Pipe Name in Text part.
+			  option.text = pipes[i].Name;
+		 
+			  //Set Pipe in Value part.
+			  option.value = pipes[i].Name;
+		 
+			  //Add the Option element to DropDownList.
+			  select.appendChild(option);
+			}
+		  var label = document.createElement("label");
+		  label.innerHTML = "Select your Pipeline to Run &emsp;";
+		  label.htmlFor = "pipe";
+		  document.getElementById("select_pipe").appendChild(label).appendChild(select);
+      
+  
+  	});
+}
+
+function upload_csv(){
+	console.log("Inside upload_csv");
+	
+	var csv_file_upload = document.getElementById("input_csv").value;
+	
+	console.log(csv_file_upload);
+	
+	$.post('/upload_csv', { file_upload: csv_file_upload });
+	
+}
+
+
+</script>
+	
+</body>
+</html>
