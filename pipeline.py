@@ -32,7 +32,7 @@ def extract_pipeline_info(pipeline_json=None):
 
     now=datetime.now()
     pipeline_name = pipeline_info['name'] + now.strftime("%Y_%m_%d_%H_%M_%S") #Use this pipelineName
-    pipeline_name = "test_pipeline"
+    #pipeline_name = "test_pipeline"
     pipeline_dir = os.path.join(run_dir,pipeline_name)
     if not  os.path.exists(pipeline_dir):
         os.mkdir(pipeline_dir)
@@ -45,13 +45,14 @@ def extract_pipeline_info(pipeline_json=None):
 def run_task(task_info,task_dir):
 
     task_name = task_info['Name']
+    
     print(task_name)
     script_name = task_name + '.py'
     script_name = os.path.join(uploads_dir,script_name)
     print(script_name)
     command = "python %s" % script_name
     print(command)
-    command = "python %s" % script_name
+    command = "python %s %s %s" % (script_name,task_name,task_dir)
     print("Executing ...", command)
     print(os.getcwd())
     os.system(command)
@@ -72,6 +73,7 @@ def run_pipeline(pipeline_json=None):
     for i,task_info in enumerate(pipeline_tasks):
         if i == 0:
             input_source = os.path.join(uploads_dir,first_task_input)
+            shutil.copy(input_source,os.path.join(pipeline_dir,"pipeline_input.csv"))
         else:
             input_source = os.path.join(prev_task_dir,"output.csv")
         
@@ -90,7 +92,8 @@ def run_pipeline(pipeline_json=None):
         run_task(task_info,task_dir)
         prev_task_dir = task_dir
 
-
+    
+    shutil.copy(os.path.join(task_dir,"output.csv"),  os.path.join(pipeline_dir,"pipeline_output.csv"))
 
 
 if __name__ == "__main__":
