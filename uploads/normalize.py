@@ -36,6 +36,6 @@ if __name__ == "__main__":
     print("calling task")
     
     task_json = "./taskjson/Normalize.json"             # Update taskname.json
-    task_dir = "./run_info/test_pipeline/normalize"     # Update test_pipeline
+    task_dir = "./run_info/test_pipeline/1_normalize"     # Update test_pipeline
     normalise = Normalise(task_json,task_dir)
     normalise.run()
