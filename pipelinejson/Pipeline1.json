@@ -5,7 +5,11 @@
     "taskList": [
         {
             "TaskId": "1",
-            "Name": "normalize"
+            "Name": "Normalize"
+        },
+        {
+            "TaskId": "2",
+            "Name": "SampleTask"
         }
        
     ]

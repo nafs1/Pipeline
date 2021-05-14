@@ -26,26 +26,3 @@ class Task:
                     print("datatype mismatch for {}".format(name))
         return  True
     
- 
-            
-
-    
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
