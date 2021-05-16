@@ -1,10 +1,32 @@
+
 function run_python() {
     console.log("inside run_python frontend");
 	
-	let run_pipe = document.getElementById("select_pipe").value;
+	let run_pipe = document.getElementById("pipe").value;
 	let csv_path = document.getElementById("csv_path").value;
 	
-	$.post('/run_python', { run_pipe: run_pipe, csv_path: csv_path})
+	console.log(run_pipe);
+	
+	$.post('/run_python', { run_pipe: run_pipe, csv_path: csv_path}, function(response){ 
+      console.log(response);
+	  console.log(run_pipe);
+	  //let linkpath = "run_info/"+run_pipe+"/pipeline_output.csv"
+	  var location = window.location.pathname;
+		var path = location.substring(0, location.lastIndexOf("/"));
+		var directoryName = path.substring(path.lastIndexOf("/")+1);
+	  
+	  console.log(directoryName);
+	  let linkpath = "../dummy.csv"
+	  
+	  if(response === 'OK')
+	  {
+		  console.log("style change");
+		  document.getElementById("link_id").style.display = "block";
+		  document.getElementById("myhref").setAttribute("href", linkpath);
+		  //href = "../run_info/"+run_pipe+"/pipeline_output.csv";
+	  }
+	  
+})
 	
 	
 	

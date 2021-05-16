@@ -163,15 +163,19 @@ app.post('/run_python',(req,res)=>{
 	run_pipe = req.body.run_pipe;
     csv_path = req.body.csv_path;
 	
+	console.log(run_pipe)
+	console.log(csv_path)
+	
+	run_pipe = "./pipelinejson/"+run_pipe+".json";
 	
 	const spawn = require("child_process").spawn;
-	const pythonProcess = spawn('python',["pipeline.py"]);
+	const pythonProcess = spawn('python',["pipeline.py", run_pipe]);
     
 	pythonProcess.stdout.on('data', (data) => {
     // Do something with the data returned from python script
 		console.log(data.toString());
         
-		
+		//alert("Pipeline Run Successful...Check Status")
 })
 	
 	
@@ -179,11 +183,12 @@ app.post('/run_python',(req,res)=>{
 	pythonProcess.stderr.on('data', (data) => {
     // Do something with the data returned from python script
 		console.log(data.toString());
+		
+		//alert("Pipeline Run Unsuccessful...Check Status")
         
 });
 	
-	
-	res.send('sent from run_python');
+	res.sendStatus(200);
 	
 })
 	
