@@ -8,6 +8,7 @@ import argparse
 
 run_dir = "./run_info"
 uploads_dir = "./uploads"
+data_dir = "./upload_csv"
 
 def extract_pipeline_info(pipeline_json=None):
 
@@ -62,17 +63,17 @@ def run_task(task_info,task_dir):
 
 
 
-def run_pipeline(pipeline_json=None):
+def run_pipeline(pipeline_json,input_csv):
 
     pipeline_info = extract_pipeline_info(pipeline_json)
     pipeline_dir = pipeline_info['pipeline_dir']
     pipeline_tasks = pipeline_info['tasks']
-    first_task_input = pipeline_info['input']
+    first_task_input = input_csv
     prev_task = None
 
     for i,task_info in enumerate(pipeline_tasks):
         if i == 0:
-            input_source = os.path.join(uploads_dir,first_task_input)
+            input_source = os.path.join(data_dir,first_task_input)
             shutil.copy(input_source,os.path.join(pipeline_dir,"pipeline_input.csv"))
         else:
             input_source = os.path.join(prev_task_dir,"output.csv")
@@ -98,9 +99,11 @@ def run_pipeline(pipeline_json=None):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-i","--input",help="Input json to the pipeline")
+    parser.add_argument("pipelinejson",help="Input json to the pipeline")
+    parser.add_argument("csvfile",help="Input csv to the pipeline")
     args = parser.parse_args()
-    pipeline_json= args.input    
-    run_pipeline(pipeline_json)
+    pipeline_json= args.pipelinejson 
+    input_csv= args.csvfile
+    run_pipeline(pipeline_json,input_csv)
    
     
