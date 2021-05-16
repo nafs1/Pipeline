@@ -70,7 +70,10 @@ def run_pipeline(pipeline_json,input_csv):
     pipeline_tasks = pipeline_info['tasks']
     first_task_input = input_csv
     prev_task = None
-
+    status_file = open('status.txt','w')
+    status = "%s\n" % pipeline_dir
+    status_file.write(status)
+    num_tasks = len(pipeline_tasks)
     for i,task_info in enumerate(pipeline_tasks):
         if i == 0:
             input_source = os.path.join(data_dir,first_task_input)
@@ -80,6 +83,8 @@ def run_pipeline(pipeline_json,input_csv):
         
         task_id = int(task_info['TaskId'])
         task_name ="%d_%s"%(task_id,task_info['Name'])
+        status = "Task {}/{}:{} started\n".format(i+1,num_tasks,task_name)
+        status_file.write(status)
         task_dir = os.path.join(pipeline_dir,task_name)
         if not os.path.exists(task_dir):
             os.mkdir(task_dir)
@@ -92,7 +97,11 @@ def run_pipeline(pipeline_json,input_csv):
         shutil.copy("iris.csv",task_input)      #update iris.csv, iris.csv will be captured as arg and write else part for input.csv as o/p of prev 
         run_task(task_info,task_dir)
         prev_task_dir = task_dir
+        status = "Task {}/{}:{} Completed\n".format(i+1,num_tasks,task_name)
+        status_file.write(status)
 
+    status = "Pipeline  Completed\n".format(i,task_name)
+    status_file.write(status)
     
     shutil.copy(os.path.join(task_dir,"output.csv"),  os.path.join(pipeline_dir,"pipeline_output.csv"))
 
