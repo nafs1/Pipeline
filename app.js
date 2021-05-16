@@ -169,7 +169,7 @@ app.post('/run_python',(req,res)=>{
 	run_pipe = "./pipelinejson/"+run_pipe+".json";
 	
 	const spawn = require("child_process").spawn;
-	const pythonProcess = spawn('python',["pipeline.py", run_pipe]);
+	const pythonProcess = spawn('python',["pipeline.py", run_pipe, csv_path]);
     
 	pythonProcess.stdout.on('data', (data) => {
     // Do something with the data returned from python script
