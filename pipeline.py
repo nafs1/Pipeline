@@ -32,7 +32,7 @@ def extract_pipeline_info(pipeline_json=None):
 
 
     now=datetime.now()
-    pipeline_name = pipeline_info['name'] + now.strftime("%Y_%m_%d_%H_%M_%S") #Use this pipelineName
+    pipeline_name = pipeline_info['name'] +'_'+ now.strftime("%Y_%m_%d_%H_%M_%S") #Use this pipelineName
     #pipeline_name = "test_pipeline"
     pipeline_dir = os.path.join(run_dir,pipeline_name)
     if not  os.path.exists(pipeline_dir):
@@ -70,8 +70,11 @@ def run_pipeline(pipeline_json,input_csv):
     pipeline_tasks = pipeline_info['tasks']
     first_task_input = input_csv
     prev_task = None
-    status_file = open('status.txt','w')
+    latest_file = open('latest.txt','w')
     status = "%s\n" % pipeline_dir
+    latest_file.write(status)
+    status_file = open(os.path.join(pipeline_dir,'status.txt'),'w')
+    status = "Starting pipeline...%s\n" % pipeline_info['name']
     status_file.write(status)
     num_tasks = len(pipeline_tasks)
     for i,task_info in enumerate(pipeline_tasks):
