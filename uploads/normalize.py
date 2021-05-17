@@ -4,6 +4,7 @@ import pandas as pd
 from task import Task
 import os
 import argparse
+import pdb
 
 task_jsons_dir = "./taskjson"
 
@@ -17,7 +18,6 @@ class Normalise(Task):
         dataset = pd.read_csv(self.input_csv,index_col=False)
         inputs = dataset[columns].values
         colums = columns
-        
         scaler = preprocessing.StandardScaler()
         transformed = scaler.fit_transform(inputs)
         transformed_df = pd.DataFrame(transformed,columns=columns)
