@@ -1,184 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Pipeline Generator</title>
+  <title>Bootstrap Example</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <!-- <script src="https://requirejs.org/docs/release/2.3.5/minified/require.jscripts/require.js"></script> -->
-  <!-- <script src ="getInputs.js"></script> -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
+  <link rel="stylesheet" href="style1.css">
+
 </head>
-<body onload="fetch_pipeline()">
+<body>
 
-
-<div class="container">
-  <h3>Pipeline Dashboard</h3>
-  <p>A general view of Pipeline-Dashboard</p> 
-  <hr />
-  
-	<div id="pipeholder" >
-    <div id="select_pipe" style="border-style: dotted; width: fit-content; padding: 10px;">
-    
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">Logo</a>
     </div>
-    <br>
-    <div id="csvfile" style="border-style: dotted; width: fit-content; padding: 10px;">
-      
-      
-      <div id="csv">
-        <form action ="/upload_csv" enctype="multipart/form-data" method="POST" target="hidden_iframe">
-            
-          <label for="input_csv">Choose Input CSV file to upload</label><br> 
-          <br/>
-              <input type="file" name="mycsvfile" required id ="input_csv" accept=".csv"> <br><br>
-              <input type="submit" value="Upload" id = "csv-upload" onclick="upload_csv()">
-          </form>
-        </div>
-        <iframe name="hidden_iframe" style="display: none;"></iframe>
-        
-    </div>
-    
-    <br>
-    <input type="submit" value="Run Pipeline" id = "run_pipe" onclick="" style="background-color: blue; border-radius: 10%;color: white;">
-  </div>
-	<br><br><br><br>
-  
-	
-	<div>
-		<input type="button" id="run_python" value="Run Python" onclick="run_python()" />
-    </div>
-	
-	<div>
-		<input type="button" id="check_python" value="Run Pipe" onclick="check_python()" />
-    </div>
-	
-	<div>
-		<input type="button" id="check_status" value="Check Status" onclick="check_status()" />
-    </div>
-	
-	
-	
-  <button type="button" class="btn btn-info btn-md" id="myBtn" onclick="check_status()">Open Modal</button>
-
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog modal-lg">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-		  <h4 class="modal-title">Pipeline Log</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          
-        </div>
-        <div class="modal-body" id="mydiv">
-          <p id = "mypara">============================ Log =============================</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Projects</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      </ul>
     </div>
   </div>
-
+</nav>
   
-  
+<div class="container-fluid text-center">    
+  <div class="row content">
+    <div class="col-sm-1 sidenav">
+    </div>
+	
+	
+    <div class="col-sm-10"> 
+      <h2>Pipeline Dashboard</h2>
+	  <p>A general view of Pipeline-Dashboard</p> 
+	  <hr>
+	  
+	  <div class="col-sm-2 text-left"></div>
+	   
+		<div class="col-sm-8 text-left">
+	  
+			<div>
+			<input type="button" class="btn btn-info" id="get_task" value="Fetch Pipeline" onclick="fetch_pipeline()" />
+			</div>
+			<br><br>
+			<div id="select_pipe">
+			</div>
+			<br><br>
+			<div id="csv">
+			  <form action ="/upload_csv" enctype="multipart/form-data" method="POST" target="hidden_iframe">
+				<h4><span>Upload CSV File:</span></h4>
+				<br> 
+                <input type="file" name="mycsvfile" required id ="input_csv" accept=".csv"> <br>
+                <input type="submit" class="btn btn-warning" value="Upload" id = "csv-upload" onclick="upload_csv()">
+			  </form>
+            </div>
+			<iframe name="hidden_iframe" style="display: none;"></iframe>
+			
+			<div class="form-group">
+			   <h3>CSV File Path</h3>
+			   <input size=25 type="text" class="form-control" id = "csv_path" readonly>
+			</div>
+			
+			<br><br>
+			<div>			
+			<input type="button" class="btn btn-success btn-block" value="Run Pipeline" id = "run_pipe" onclick="run_python()">			
+			<input type="button" class="btn btn-primary btn-block" id="check_status" value="Check Status" onclick="check_status()" />
+			</div>
+			
+			<br><br>
+			<div id="link_id" style="display: none;"><a href="#" id="myhref" download>CLICK TO DOWNLOAD THE CSV</a></div>
+			
+		</div>
+		<div class="col-sm-2 text-left"></div>
+		
+		<!-- Modal -->
+		<div class="modal fade" id="myModal" role="dialog">
+			<div class="modal-dialog modal-lg">
+			
+			  <!-- Modal content-->
+			  <div class="modal-content">
+				<div class="modal-header">
+				  <h4 class="modal-title">Pipeline Log</h4>
+				  <button type="button" class="close" data-dismiss="modal">&times;</button>
+				  
+				</div>
+				<div class="modal-body" id="mydiv">
+				  <p id = "mypara">============================ Log =============================</p>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			  </div>
+			  
+			</div>
+		</div>
+	
+    </div>
+    <div class="col-sm-1 sidenav">
+    </div>
+  </div>
 </div>
 
-<script type="text/javascript" >
+<footer class="container-fluid text-center">
+  <p>Footer Text</p>
+</footer>
 
-  
-  
-      
-function run_python() {
-    console.log("inside run_python frontend");
-	
-	$.get('/run_python', function(data, status){
-	   console.log("Data fetched "+ data); 
-	   
-  });
-
-
-}
-
-
-
-function check_python() {
-    console.log("inside check_python frontend");
-	
-	$.get('/check_python', function(data, status){
-	   console.log("Data fetched "+ data); 
-	   
-  });
-}
-
-
-function check_status() {
-    console.log("inside check_status frontend");
-	
-	$.get('/check_status', function(data, status){
-	   console.log("Data fetched "+ data);
-
-
-		for( let i = 0;i<data.length;i++){
-
-		var para = document.createElement("P");
-		var t = document.createTextNode("Task :" + data[i].TaskName+"=======>Log :"+ data[i].Log);
-		para.appendChild(t);
-		document.getElementById("mydiv").appendChild(para);
-		}
-		
-	   
-	   
-  });
-  
-  $("#myModal").modal();
-}
-
-function fetch_pipeline(){
-  $.get('/fetch_pipes', function(pipes, status){
-	   console.log("Data fetched"+ pipes[0].Name); 
-		var select = document.createElement("select");
-			select.name = "pipe";
-			select.id = "pipe";      
-		//Add the Options to the DropDownList.
-			for (var i = 0; i < pipes.length; i++) {
-			  var option = document.createElement("OPTION");
-		 
-			  //Set Pipe Name in Text part.
-			  option.text = pipes[i].Name;
-		 
-			  //Set Pipe in Value part.
-			  option.value = pipes[i].Name;
-		 
-			  //Add the Option element to DropDownList.
-			  select.appendChild(option);
-			}
-		  var label = document.createElement("label");
-		  label.innerHTML = "Select your Pipeline to Run &emsp;";
-		  label.htmlFor = "pipe";
-		  document.getElementById("select_pipe").appendChild(label).appendChild(select);
-      
-  
-  	});
-}
-
-function upload_csv(){
-	console.log("Inside upload_csv");
-	
-	var csv_file_upload = document.getElementById("input_csv").value;
-	
-	console.log(csv_file_upload);
-	
-	$.post('/upload_csv', { file_upload: csv_file_upload });
-	
-}
-
-
+<script src="mypipeline_dashboard.js">
 </script>
-	
+
 </body>
 </html>

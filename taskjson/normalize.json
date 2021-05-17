@@ -1,0 +1,28 @@
+{
+    "taskName": "normalize",
+    "inputName": "iris",
+    "input": [
+        {
+            "sr_no": "1",
+            "name": "SepalLength",
+            "Data_type": "float",
+            "default_val": "0"
+        },
+        {
+            "sr_no": "2",
+            "name": "SepalWidth",
+            "Data_type": "float",
+            "default_val": "0"
+        }
+    ],
+    "executor": "normalize.py",
+    "outputName": "iris",
+    "output": [
+        {
+            "sr_no": "1",
+            "name": "sepalLength",
+            "Data_type": "float",
+            "default_val": "0"
+        }
+    ]
+}

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Task Generator</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- <script src ="getInputs.js"></script> -->
+</head>
+<body onload="construct()">
+
+
+<div class="container">
+  <h2>Task Generator</h2>
+  <p>A general view of Task-Container</p> 
+    <div>
+	<h3> Task Name</h3>
+	<input size =25 type = "text" id = "task_name">
+	<br/><br/>
+	</div>	
+	 
+	<div>
+	<h3> Input Name</h3>
+	<input size =25 type = "text" id = "input_name">
+	<br/><br/>
+	</div>	
+
+  <div id="tablediv">
+    
+    <table id="inputTable" class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Sr.No</th>
+          <th>Feature_Name</th>
+		  <th>Data-type</th>
+          <th>Default_value</th>
+		  <th>Delete</th>
+		  <th>Add Rows</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+        <td>1</td>
+        <td><input size=25 type="text" id="latbox" /></td>
+        <td><input size=25 type="text" id="lngbox" /></td>
+        <td><input size=25 type="text" id="z" /></td>
+        <td><input type="button" id="delInputButton" value="Delete" onclick="deleteRow(this)" /></td>
+        <td><input type="button" id="addInputButton" value="Add More Features" onclick="insRow()" /></td>
+        </tr>      
+      </tbody>
+    </table>
+	
+    
+    
+  </div>
+  
+  
+  <div id="exec">
+	<form action ="/upload_exec" enctype="multipart/form-data" method="POST" target="hidden_iframe">
+      
+        <span>Upload Executor File:</span> 
+		<br/>
+        <input type="file" name="myfile" required/ id ="file_upload"> <br><br>
+        <input type="submit" value="Upload" id = "exec_py" onclick="upload_fun()">
+    </form>
+  </div>
+  <iframe name="hidden_iframe" style="display: none;"></iframe>
+  <div id="Execution">
+		<h3>Python Executable File Path </h3>
+		     
+			<input type='text' name='File path' id ="executor">
+			
+	<br/><br/>
+    
+  </div>
+  
+
+  <div>
+	<h3> Output Name</h3>
+	<input size =25 type = "text" id = "output_name">
+	<br/><br/>
+	</div>
+  
+  <div id="outtablediv">
+    
+    <table id="outputTable" class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Sr.No</th>
+          <th>Feature_Name</th>
+		  <th>Data-type</th>
+          <th>Default_value</th>
+		  <th>Delete</th>
+		  <th>Add Rows</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+        <td>1</td>
+        <td><input size=25 type="text" id="outlatbox" /></td>
+        <td><input size=25 type="text" id="outlngbox" /></td>
+        <td><input size=25 type="text" id="outz" /></td>
+        <td><input type="button" id="outdelInputButton" value="Delete" onclick="outdeleteRow(this)" /></td>
+        <td><input type="button" id="outaddInputButton" value="Add More Features" onclick="outinsRow()" /></td>
+        </tr>      
+      </tbody>
+    </table>
+    <input type="button" id="generateTask" value="Generate Task" onclick="fun()" /><br/><br/>
+    
+    <p id="outdemo"></p>
+    
+  </div>
+  
+  <button onclick="document.location='pipeline.html'">Go to Pipeline</button>
+  
+  
+</div>
+
+<script>
+	function construct()
+	{   inputName = ""
+		inputs = [];
+		executor = ""
+		outputName = ""
+		outputs =[]
+
+	}
+	
+	  function deleteRow(row) {
+	  var i = row.parentNode.parentNode.rowIndex;
+	  document.getElementById('inputTable').deleteRow(i);
+	}
+
+
+	function insRow() {
+	  console.log('hi');
+	  var x = document.getElementById('inputTable');
+	  var new_row = x.rows[1].cloneNode(true);
+	  var len = x.rows.length;
+	  new_row.cells[0].innerHTML = len;
+
+	  var inp1 = new_row.cells[1].getElementsByTagName('input')[0];
+	  inp1.id += len;
+	  inp1.value = '';
+	  var inp2 = new_row.cells[2].getElementsByTagName('input')[0];
+	  inp2.id += len;
+	  inp2.value = '';
+	  x.appendChild(new_row);
+	}
+	
+	
+	  function outdeleteRow(row) {
+	  var i = row.parentNode.parentNode.rowIndex;
+	  document.getElementById('outputTable').deleteRow(i);
+	}
+
+
+	function outinsRow() {
+	  console.log('hi');
+	  var x = document.getElementById('outputTable');
+	  var new_row = x.rows[1].cloneNode(true);
+	  var len = x.rows.length;
+	  new_row.cells[0].innerHTML = len;
+
+	  var inp1 = new_row.cells[1].getElementsByTagName('input')[0];
+	  inp1.id += len;
+	  inp1.value = '';
+	  var inp2 = new_row.cells[2].getElementsByTagName('input')[0];
+	  inp2.id += len;
+	  inp2.value = '';
+	  x.appendChild(new_row);
+	}
+	
+	
+	function upload_fun(){
+	console.log("Inside upload_fun");
+	
+	var file_upload = document.getElementById("file_upload").value;
+	
+	document.getElementById("executor").value = file_upload;
+	
+	console.log(file_upload);
+	
+	$.post('/upload_exec', { file_upload: file_upload });
+	
+	}
+	
+	
+	
+	
+  function fun()
+  { 
+  
+	taskName = document.getElementById("task_name").value
+    inputName = document.getElementById("input_name").value
+	outputName = document.getElementById("output_name").value
+	console.log("inside fun");
+	var input_rows_len = document.getElementById("inputTable").rows.length;
+	console.log(input_rows_len);
+	
+	for(i=1;i<input_rows_len;i++)
+	{
+		sr_no = document.getElementById("inputTable").rows[i].cells[0].innerHTML;
+		name = document.getElementById("inputTable").rows[i].cells[1].children[0].value;
+		d_type = document.getElementById("inputTable").rows[i].cells[2].children[0].value;
+		default_val = document.getElementById("inputTable").rows[i].cells[3].children[0].value;
+		
+		input = {
+				  "sr_no":sr_no,
+				  "name":name,
+				  "Data_type":d_type,
+				  "default_val":default_val
+				}
+		
+		inputs.push(input);
+		
+	}
+	var executor = document.getElementById("executor").value
+	var output_rows_length = document.getElementById("outputTable").rows.length;
+	console.log(output_rows_length)
+	for( i=1;i<output_rows_length;i++)
+	{
+		sr_no = document.getElementById("outputTable").rows[i].cells[0].innerHTML;
+		name = document.getElementById("outputTable").rows[i].cells[1].children[0].value;
+		d_type = document.getElementById("outputTable").rows[i].cells[2].children[0].value;
+		default_val = document.getElementById("outputTable").rows[i].cells[3].children[0].value;
+		
+		output = {
+				"sr_no":sr_no,
+				  "name":name,
+				  "Data_type":d_type,
+				  "default_val":default_val
+				}
+	outputs.push(output)
+	}
+	
+	console.log(taskName)
+	console.log(inputName)
+	console.log(inputs)
+	console.log(outputName)
+	console.log(outputs)
+	
+	
+	
+	$.post('/task',{taskName: taskName,
+				  inputName:inputName,
+                  task: inputs,
+                  executor:executor,
+                  outputName:outputName,
+				  outputs:outputs})
+	
+
+	
+
+}
+</script>
+</body>
+</html>
+
+
+
+

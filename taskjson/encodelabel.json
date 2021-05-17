@@ -1,0 +1,22 @@
+{
+    "taskName": "encodelabel",
+    "inputName": "iris",
+    "input": [
+        {
+            "sr_no": "1",
+            "name": "Species",
+            "Data_type": "String",
+            "default_val": "0"
+        }
+    ],
+    "executor": "encodelabel.py",
+    "outputName": "iris",
+    "output": [
+        {
+            "sr_no": "1",
+            "name": "Species_encoded",
+            "Data_type": "String",
+            "default_val": "0"
+        }
+    ]
+}

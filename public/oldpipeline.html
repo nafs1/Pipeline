@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Pipeline Generator</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- <script src="https://requirejs.org/docs/release/2.3.5/minified/require.jscripts/require.js"></script> -->
+  <!-- <script src ="getInputs.js"></script> -->
+</head>
+<body onload="myconstruct()">
+
+
+<div class="container">
+  <h2>Pipeline Generator</h2>
+  <p>A general view of Pipeline-Container</p> 
+  <hr />
+  
+    <h3> Pipeline Name</h3>
+	<div>
+		<input size =25 type = "text" id = "pipe_name"><br><br>
+		<input type="button" id="get_task" value="Fetch Tasks" onclick="fetchtasks()" />
+	</div>
+
+	<br>
+	
+    <div id="selectask" >
+    </div> 
+	
+	<br>
+	<div>
+		<input type="button" id="generatePipeline" value="Generate Pipeline" onclick="pipegen()" /><br><br>
+    </div>
+  
+  <button onclick="document.location='pipeline_dashboard.html'">Go to Pipeline Dashboard</button>
+  
+</div>
+
+<script type="text/javascript" >
+
+  
+  function myconstruct(){ 
+		pipelineName = "";
+		taskList = [];
+	}
+
+      
+  function fetchtasks() {
+    //Build an array containing Task records.
+	
+	$.get('/fetch_task', function(tasks, status){
+	   console.log("Data fetched"+ tasks[0].Name);
+    
+		var tcount=tasks.length;
+		var count=1; 
+		
+		while(count<=tcount){ 
+		
+			var select = document.createElement("select");
+			select.name = "task"+count;
+			select.id = "task"+count;      
+		//Add the Options to the DropDownList.
+			for (var i = 0; i < tasks.length; i++) {
+			  var option = document.createElement("OPTION");
+		 
+			  //Set Task Name in Text part.
+			  option.text = tasks[i].Name;
+		 
+			  //Set TaskId in Value part.
+			  option.value = tasks[i].Name;
+		 
+			  //Add the Option element to DropDownList.
+			  select.appendChild(option);
+			}
+		  var label = document.createElement("label");
+		  label.innerHTML = "&emsp;Task"+count+":";
+		  label.htmlFor = "task"+count;
+		  count=count+1;
+		  document.getElementById("selectask").appendChild(label).appendChild(select);
+        }
+  
+  });
+
+}
+
+function pipegen(){
+
+	let totalTask = document.getElementById("task1").options.length;
+	let myobj;
+	
+	for(let i=0; i < totalTask; i++)
+	{
+		task_list = document.getElementById("task"+(i+1)).value;
+		myobj ={TaskId: i+1, Name: task_list};
+		taskList.push(myobj);
+	}
+
+	console.log("inside pipegen");
+	pipelineName = document.getElementById("pipe_name").value;
+	
+	$.post('/post_pipe', { pipelineName: pipelineName, totalTask: totalTask, taskList: taskList})
+
+}
+</script>
+	
+</body>
+</html>
