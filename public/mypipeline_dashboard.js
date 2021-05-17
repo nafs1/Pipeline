@@ -10,8 +10,8 @@ function run_python() {
 	$.post('/run_python', { run_pipe: run_pipe, csv_path: csv_path}, function(response){ 
       console.log(response);
 	  console.log(run_pipe);
-	  //let linkpath = "../run_info/"+run_pipe+'/'+'pipeline_output'+'.csv'
-	  let linkpath = "C:\\Users\\nafsa\\Desktop\\rough_java\\DMProject_2\\Pipeline"+'\\pipeline_output'+'.csv'
+	  
+	  let linkpath = "pipeline_output.csv"
 	  console.log(linkpath);
 	  
 	  if(response.mydata === "")
@@ -19,7 +19,7 @@ function run_python() {
 		  console.log("style change");
 		  document.getElementById("link_id").style.display = "block";
 		  document.getElementById("myhref").setAttribute("href", linkpath);
-		  
+		  window.alert("Pipeline Run Successful....Check Status");
 	  }
 	  else
 	  {

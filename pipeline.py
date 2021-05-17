@@ -9,6 +9,7 @@ import argparse
 run_dir = "./run_info"
 uploads_dir = "./uploads"
 data_dir = "./upload_csv"
+final_output_path = "./public"
 
 def extract_pipeline_info(pipeline_json=None):
 
@@ -108,6 +109,8 @@ def run_pipeline(pipeline_json,input_csv):
     status_file.write(status)
     status_file.close()
     shutil.copy(os.path.join(task_dir,"output.csv"),  os.path.join(pipeline_dir,"pipeline_output.csv"))
+    shutil.copy(os.path.join(pipeline_dir,"pipeline_output.csv"), os.path.join(final_output_path,"pipeline_output.csv"))
+    
 
 
 if __name__ == "__main__":
