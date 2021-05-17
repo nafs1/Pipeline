@@ -71,8 +71,9 @@ def run_pipeline(pipeline_json,input_csv):
     first_task_input = input_csv
     prev_task = None
     latest_file = open('latest.txt','w')
-    status = "%s\n" % pipeline_dir
+    status = "%s" % pipeline_dir
     latest_file.write(status)
+    latest_file.close()
     status_file = open(os.path.join(pipeline_dir,'status.txt'),'w')
     status = "Starting pipeline...%s\n" % pipeline_info['name']
     status_file.write(status)
@@ -105,7 +106,7 @@ def run_pipeline(pipeline_json,input_csv):
 
     status = "Pipeline  Completed\n".format(i,task_name)
     status_file.write(status)
-    
+    status_file.close()
     shutil.copy(os.path.join(task_dir,"output.csv"),  os.path.join(pipeline_dir,"pipeline_output.csv"))
 
 
