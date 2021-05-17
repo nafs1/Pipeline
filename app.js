@@ -6,7 +6,7 @@ const jsontoxml  = require("jsontoxml")
 const fs = require("fs")
 const fsr = require("fs")
 const multer = require("multer")
-
+const process = require('process')
 
 const app = express()
 app.use(bodyParser.json())
@@ -159,7 +159,6 @@ app.post('/run_python',(req,res)=>{
 	
 	console.log("inside run_python backend");
 	
-	
 	run_pipe = req.body.run_pipe;
     csv_path = req.body.csv_path;
 	
@@ -168,9 +167,9 @@ app.post('/run_python',(req,res)=>{
 	
 	run_pipe = "./pipelinejson/"+run_pipe+".json";
 	
-	const spawn = require("child_process").spawn;
+	const spawn = require("child_process").spawnSync;
 	const pythonProcess = spawn('python',["pipeline.py", run_pipe, csv_path]);
-    
+    /*
 	pythonProcess.stdout.on('data', (data) => {
     // Do something with the data returned from python script
 		console.log(data.toString());
@@ -186,9 +185,24 @@ app.post('/run_python',(req,res)=>{
 		
 		//alert("Pipeline Run Unsuccessful...Check Status")
         
-});
+});*/
+
+	let savedOutput = '';
+	//let curr_dir = fsr.readFileSync('latest.txt');
+
 	
-	res.sendStatus(200);
+	savedOutput = pythonProcess.stderr;
+	console.log(String(savedOutput));
+	
+	//curr_dir = curr_dir+'/'+'pipeline_output'+'.csv'
+	curr_dir =  process.cwd();
+	
+	let obj = {
+		"output_csv_path": curr_dir,
+        "mydata": String(savedOutput)
+    }
+	
+	res.send(obj);
 	
 })
 	
@@ -292,6 +306,20 @@ res.send("end");
 app.get("/check_status",function (req, res, next) {
 	
 	console.log("inside check_status backend");
+	let curr_dir = fsr.readFileSync('latest.txt');
+	
+	
+	console.log(curr_dir+'/'+'status'+'.txt');
+	let status_data = fsr.readFileSync(curr_dir+'/'+'status'+'.txt',{encoding:'utf8', flag:'r'});
+	
+	
+	res.send(status_data);
+	
+	
+	
+	
+	
+	/*
 	
 	let directoryPath = './run_info/Pipeline1';
 	files = fsr.readdirSync(directoryPath);
@@ -318,7 +346,7 @@ app.get("/check_status",function (req, res, next) {
 	console.log(myarr);
 	
     res.send(myarr);
-
+	*/
 
     
 })

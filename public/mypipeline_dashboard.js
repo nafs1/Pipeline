@@ -10,21 +10,28 @@ function run_python() {
 	$.post('/run_python', { run_pipe: run_pipe, csv_path: csv_path}, function(response){ 
       console.log(response);
 	  console.log(run_pipe);
-	  //let linkpath = "run_info/"+run_pipe+"/pipeline_output.csv"
-	  var location = window.location.pathname;
-		var path = location.substring(0, location.lastIndexOf("/"));
-		var directoryName = path.substring(path.lastIndexOf("/")+1);
+	  //let linkpath = "../run_info/"+run_pipe+'/'+'pipeline_output'+'.csv'
+	  let linkpath = "C:\\Users\\nafsa\\Desktop\\rough_java\\DMProject_2\\Pipeline"+'\\pipeline_output'+'.csv'
+	  console.log(linkpath);
 	  
-	  console.log(directoryName);
-	  let linkpath = "../dummy.csv"
-	  
-	  if(response === 'OK')
+	  if(response.mydata === "")
 	  {
 		  console.log("style change");
 		  document.getElementById("link_id").style.display = "block";
 		  document.getElementById("myhref").setAttribute("href", linkpath);
-		  //href = "../run_info/"+run_pipe+"/pipeline_output.csv";
+		  
 	  }
+	  else
+	  {
+		var para = document.createElement("P");
+		var para = document.createElement("P");
+		var t = document.createTextNode("Error :====> "+ response.mydata);
+		para.appendChild(t);
+		document.getElementById("mydiv").appendChild(para);
+		window.alert("Error while running the executor file....Check Status");
+	  }
+
+	  
 	  
 })
 	
@@ -51,15 +58,23 @@ function check_status() {
 	
 	$.get('/check_status', function(data, status){
 	   console.log("Data fetched "+ data);
+	   
+	   
+	    var para = document.createElement("P");
+		var t = document.createTextNode("Log :====> "+ data);
+		para.appendChild(t);
+		document.getElementById("mydiv").appendChild(para);
+	   
+	   
 
-
+		/*
 		for( let i = 0;i<data.length;i++){
 
 		var para = document.createElement("P");
 		var t = document.createTextNode("Task :" + data[i].TaskName+"=======>Log :"+ data[i].Log);
 		para.appendChild(t);
 		document.getElementById("mydiv").appendChild(para);
-		}
+		}*/
 		
 	   
 	   
