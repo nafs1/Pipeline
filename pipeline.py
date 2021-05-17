@@ -5,11 +5,11 @@ import time
 from datetime import datetime
 import shutil
 import argparse
+import pdb
 
 run_dir = "./run_info"
 uploads_dir = "./uploads"
 data_dir = "./upload_csv"
-final_output_path = "./public"
 
 def extract_pipeline_info(pipeline_json=None):
 
@@ -24,7 +24,6 @@ def extract_pipeline_info(pipeline_json=None):
     try:
         pipeline_info = {}
         pipeline_info['name'] = pipeline_data['pipelineName']
-        pipeline_info['input'] = pipeline_data['input_csv_name']
     except KeyError as error:
         print(error)
         print("Invalid pipeline json: {}".format(pipeline_json))
@@ -47,17 +46,24 @@ def extract_pipeline_info(pipeline_json=None):
 def run_task(task_info,task_dir):
 
     task_name = task_info['Name']
+
+    ##load task_json
+    task_json_path = os.path.join("./taskjson","%s.json"%task_name)
+    task_json = json.load(open(task_json_path,'r'))
+
+    executor = task_json["executor"] 
+    #script_name = task_name + '.py'
     
-    print(task_name)
-    script_name = task_name + '.py'
-    script_name = os.path.join(uploads_dir,script_name)
-    print(script_name)
+    script_name = os.path.join(uploads_dir,executor)
+    print("Executing task ..{}.. by calling {}".format(task_name,script_name))
     command = "python %s" % script_name
-    print(command)
     command = "python %s %s %s" % (script_name,task_name,task_dir)
     print("Executing ...", command)
     print(os.getcwd())
-    os.system(command)
+    try:
+        os.system(command)
+    except Exception as e:
+        print("Error while executing {} ".format(task_name))
    
     
     
@@ -96,10 +102,7 @@ def run_pipeline(pipeline_json,input_csv):
         task_input = os.path.join(task_dir,"input.csv")
         shutil.copy(input_source,task_input)      #update iris.csv, iris.csv will be captured as arg and write else part for input.csv as o/p of prev 
         task_id = int(task_info['TaskId'])
-        print(task_id)
-        print(task_input)
-        input_source = task_input
-        shutil.copy("iris.csv",task_input)      #update iris.csv, iris.csv will be captured as arg and write else part for input.csv as o/p of prev 
+        print("Calling ...task id: {},name:{}, with input: {} task_id".format(task_id,task_name,task_input))
         run_task(task_info,task_dir)
         prev_task_dir = task_dir
         status = "Task {}/{}:{} Completed\n".format(i+1,num_tasks,task_name)
@@ -109,17 +112,18 @@ def run_pipeline(pipeline_json,input_csv):
     status_file.write(status)
     status_file.close()
     shutil.copy(os.path.join(task_dir,"output.csv"),  os.path.join(pipeline_dir,"pipeline_output.csv"))
-    shutil.copy(os.path.join(pipeline_dir,"pipeline_output.csv"), os.path.join(final_output_path,"pipeline_output.csv"))
-    
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("pipelinejson",help="Input json to the pipeline")
     parser.add_argument("csvfile",help="Input csv to the pipeline")
+
     args = parser.parse_args()
     pipeline_json= args.pipelinejson 
     input_csv= args.csvfile
+
+    print("pipeline called for {} with input {}".format(pipeline_json,input_csv))
     run_pipeline(pipeline_json,input_csv)
    
     
